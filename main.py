@@ -15,6 +15,7 @@ print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Starting ...")
 print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Checking Requirements ...")
 print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Started ...")
 print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> WELCOME !")
+print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Created By Meer Tarbani")
 
 def pwned():
     verifyindb = input(Fore.WHITE + '! ' + Fore.WHITE + "==> Enter Password To Check In DB : ")
@@ -146,6 +147,7 @@ def start():
     # OPTIONS 0 :
     elif mainsys == '0':
         os.system("exit")
+        print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Created By Meer Tarbani")
 
     else:
         print(Fore.RED + u'\u2717 ' + Fore.WHITE + "==> Invalid Command Try Again!!!")
