@@ -9,6 +9,8 @@ from colorama import Fore
 import hashlib
 import pwnedpasswords
 
+os.system("clear")
+os.system("cls")
 print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Starting ...")
 print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Checking Requirements ...")
 print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Started ...")
