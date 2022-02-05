@@ -2,19 +2,32 @@ import os
 import re
 import random
 import array
+import string
+import sys
+from tokenize import String
 from colorama import Fore
 import hashlib
 import pwnedpasswords
 
-
+python = sys.executable
 print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Starting ...")
 print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Checking Requirements ...")
-os.system("pip install pwnedpasswords")
-os.system("cls")
 print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Started ...")
 print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> WELCOME !")
-mainsys = input(
-    "1. Cool Passwords\n2. Encode Password \n3. Verify Encoded Passwords\n4. Verify In DB\n0. Exit\nEnter Your Choice : ")
+
+def pwned():
+    verifyindb = input(Fore.WHITE + '! ' + Fore.WHITE + "==> Enter Password To Check In DB : ")
+    dbmain = pwnedpasswords.check(verifyindb)
+    if dbmain >= 1:
+        print(Fore.RED + u'\u2717 ' + Fore.WHITE + "==> Password Is Not Preffered")
+        print(Fore.RED + u'\u2717 ' + Fore.WHITE + "==> Leaked in " + str(dbmain) + " Sites/Applications")
+            
+    elif dbmain == 0:
+        print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Acceptable")
+            
+    else:
+        print(Fore.RED + u'\u2717 ' + Fore.WHITE + "==> Random error occured")
+        
 
 
 def passgen():
@@ -52,91 +65,88 @@ def passgen():
 
 # OPTION 1 :
 
+def start():
+    mainsys = input(
+        "1. Cool Passwords\n2. Encode Password \n3. Verify Encoded Passwords\n4. Verify In DB\n0. Exit\nEnter Your Choice : ")
+    if mainsys == '1':
+        verify = input(Fore.WHITE + '! ' + Fore.WHITE +
+                    "==> Enter Your Password : ")
+        bool = 0
+        while True:
+            if (len(verify) < 8):
+                print(Fore.YELLOW + '! ' + Fore.WHITE +
+                    "==> Password length should be more than 8(digits/characters)")
+                bool = -1
+                break
+            elif not re.search("[a-z]", verify):
+                print(Fore.YELLOW + '! ' + Fore.WHITE +
+                    "==> Must add a Lowercase character (a-z)")
+                bool = -1
+                break
+            elif not re.search("[A-Z]", verify):
+                print(Fore.YELLOW + '! ' + Fore.WHITE +
+                    "==> Must add a Uppercase character (A-Z)")
+                bool = -1
+                break
+            elif not re.search("[0-9]", verify):
+                print(Fore.YELLOW + '! ' + Fore.WHITE +
+                    "==> Must add number(s) (0-9)")
+                bool = -1
+                break
+            elif not re.search("[_@$!#%^&*/|\`~;:><]", verify):
+                print(Fore.YELLOW + '! ' + Fore.WHITE +
+                    "==> Must add a special character (_@$!#%^&*/|\`~;:><)")
+                bool = -1
+                break
+            elif re.search("\s", verify):
+                bool = -1
+                break
+            else:
+                bool = 0
+                print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Valid Password")
+                break
 
-if mainsys == '1':
-    verify = input(Fore.WHITE + '! ' + Fore.WHITE +
-                   "==> Enter Your Password : ")
-    bool = 0
-    while True:
-        if (len(verify) < 8):
-            print(Fore.YELLOW + '! ' + Fore.WHITE +
-                  "==> Password length should be more than 8(digits/characters)")
-            bool = -1
-            break
-        elif not re.search("[a-z]", verify):
-            print(Fore.YELLOW + '! ' + Fore.WHITE +
-                  "==> Must add a Lowercase character (a-z)")
-            bool = -1
-            break
-        elif not re.search("[A-Z]", verify):
-            print(Fore.YELLOW + '! ' + Fore.WHITE +
-                  "==> Must add a Uppercase character (A-Z)")
-            bool = -1
-            break
-        elif not re.search("[0-9]", verify):
-            print(Fore.YELLOW + '! ' + Fore.WHITE +
-                  "==> Must add number(s) (0-9)")
-            bool = -1
-            break
-        elif not re.search("[_@$!#%^&*/|\`~;:']", verify):
-            print(Fore.YELLOW + '! ' + Fore.WHITE +
-                  "==> Must add a special character (_@$!#%^&*/|\`~;:')")
-            bool = -1
-            break
-        elif re.search("\s", verify):
-            bool = -1
-            break
+        if bool == -1:
+            print(Fore.RED + u'\u2717 ' + Fore.WHITE + "==> Not a Valid Password")
+            passgen()
+        start()
+        
+
+    # OPTION 2 :
+    elif mainsys == '2':
+        verifyencode = input(Fore.WHITE + '! ' + Fore.WHITE +
+                            "==> Enter Your Password To Encode: ")
+        str = (verifyencode)
+        result = hashlib.sha256(str.encode())
+        print(Fore.GREEN + u'\u2713 ' + Fore.WHITE +
+            'SHA256 is : ', result.hexdigest())
+        start()
+
+    # OPTION 3 :
+    elif mainsys == '3':
+        passverify = input(Fore.WHITE + '! ' + Fore.WHITE +
+                        "==> Enter Your Password First: ")
+        str = (passverify)
+        result = hashlib.sha256(str.encode())
+        shaverify = input(Fore.WHITE + '! ' + Fore.WHITE +
+                        "==> Enter Your SHA256: ")
+        if result.hexdigest() == shaverify:
+            print("Verified Successfully")
+
         else:
-            bool = 0
-            print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Valid Password")
-            break
+            print("Incorrect InFo")
+        start()
 
-    if bool == -1:
-        print(Fore.RED + u'\u2717 ' + Fore.WHITE + "==> Not a Valid Password")
-        passgen()
-# OPTION 2 :
-elif mainsys == '2':
-    verifyencode = input(Fore.WHITE + '! ' + Fore.WHITE +
-                         "==> Enter Your Password To Encode: ")
-    str = str(verifyencode)
-    result = hashlib.sha256(str.encode())
-    print(Fore.GREEN + u'\u2713 ' + Fore.WHITE +
-          'SHA256 is : ', result.hexdigest())
+    # OPTION 4 :
+    elif mainsys == '4':
+        pwned()
+        start()
 
-# OPTION 3 :
-elif mainsys == '3':
-    passverify = input(Fore.WHITE + '! ' + Fore.WHITE +
-                       "==> Enter Your Password First: ")
-    str = str(passverify)
-    result = hashlib.sha256(str.encode())
-    shaverify = input(Fore.WHITE + '! ' + Fore.WHITE +
-                      "==> Enter Your SHA256: ")
-    if result.hexdigest() == shaverify:
-        print("Verified Successfully")
+    # OPTIONS 0 :
+    elif mainsys == '0':
+        os.system("exit")
 
     else:
-        print("Incorrect InFo")
-
-# OPTION 5 :
-elif mainsys == '4':
-    verifyindb = input(Fore.WHITE + '! ' + Fore.WHITE + "==> Enter Password To Check In DB : ")
-    dbmain = pwnedpasswords.check(str(verifyindb))
-    
-    if dbmain >= 1:
-        print(Fore.RED + u'\u2717 ' + Fore.WHITE + "==> Password Is Not Preffered")
-        print(Fore.RED + u'\u2717 ' + Fore.WHITE + "==> Leaked in " + str(dbmain) + " Sites/Applications")
-        
-    elif dbmain == 0:
-        print(Fore.GREEN + u'\u2713 ' + Fore.WHITE + "==> Acceptable")
-        
-    else:
-        print(Fore.RED + u'\u2717 ' + Fore.WHITE + "==> Random error occured")
-    
-
-# OPTIONS 0 :
-elif mainsys == '0':
-    os.system("exit")
-
-else:
-    print(Fore.RED + u'\u2717 ' + Fore.WHITE + "==> Invalid Command Try Again!!!")
-    os.system("python python\main.py")
+        print(Fore.RED + u'\u2717 ' + Fore.WHITE + "==> Invalid Command Try Again!!!")
+        start()
+start()
